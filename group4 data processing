@@ -1,0 +1,15 @@
+import pandas as pd
+dati_carlotta = "https://ercoppa.github.io/lfw2024/02/Food_Production.csv"
+dataset = pd.read_csv(dati_carlotta)
+dataset
+
+#splitting up the dataset in plant-based vs animal-based foods
+plant_based = dataset.loc[0:32]
+animal_based = dataset.loc[33:42]
+
+#plotting total emissions
+import matplotlib.pyplot as plt
+fig = plt.subplot()
+pl_points = plt.bar( plant_based["Food product"],plant_based.Total_emissions,  color = "green")
+an_points = plt.bar( animal_based["Food product"], animal_based.Total_emissions, color = "red")
+plt.xticks(rotation=90, fontsize = 5)
