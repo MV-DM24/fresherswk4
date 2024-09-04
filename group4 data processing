@@ -13,3 +13,20 @@ fig = plt.subplot()
 pl_points = plt.bar( plant_based["Food product"],plant_based.Total_emissions,  color = "green")
 an_points = plt.bar( animal_based["Food product"], animal_based.Total_emissions, color = "red")
 plt.xticks(rotation=90, fontsize = 5)
+
+#working on water usage - freshwater usage per kilogram comparison
+fig, axs = plt.subplots(1, 2, figsize=(14, 6))  
+
+axs[0].plot(plant_based["Food product"], plant_based["Freshwater withdrawals per kilogram (liters per kilogram)"], color="green")
+axs[0].set_title("Plant-based Freshwater Withdrawals")
+axs[0].set_xticklabels(plant_based["Food product"], rotation=90, fontsize=6)  # Rotate x-tick labels
+axs[0].set_ylabel("Liters per Kilogram")
+
+axs[1].plot(animal_based["Food product"], animal_based["Freshwater withdrawals per kilogram (liters per kilogram)"], color="red")
+axs[1].set_title("Animal-based Freshwater Withdrawals")
+axs[1].set_xticklabels(animal_based["Food product"], rotation=90, fontsize=6)  # Rotate x-tick labels
+axs[1].set_ylabel("Liters per Kilogram")
+
+plt.tight_layout()
+plt.show()
+
