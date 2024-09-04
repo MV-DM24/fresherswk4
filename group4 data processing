@@ -14,6 +14,31 @@ pl_points = plt.bar( plant_based["Food product"],plant_based.Total_emissions,  c
 an_points = plt.bar( animal_based["Food product"], animal_based.Total_emissions, color = "red")
 plt.xticks(rotation=90, fontsize = 5)
 
+#comparing processing emissions
+plant_based_stage1= plant_based[["Land use change", "Animal Feed", "Farm"]].sum(axis=1)
+plant_based_stage1 = (plant_based_stage1).sum()
+print(plant_based_stage1)
+
+animal_based_stage1 =  animal_based[["Land use change", "Animal Feed", "Farm"]].sum(axis=1)
+animal_based_stage1 = (animal_based_stage1).sum()
+print(animal_based_stage1)
+
+plant_based_stage2 = plant_based.iloc[:, 4:8].sum(axis=1)
+plant_based_stage2 = (plant_based_stage2).sum()
+print(plant_based_stage2)
+
+animal_based_stage2 = animal_based.iloc[:, 4:8].sum(axis=1)
+animal_based_stage2 = (animal_based_stage2).sum()
+print(animal_based_stage2)
+
+fig, ax = plt.subplots()
+bars1 = ax.bar("plant", plant_based_stage1, label = "Plant Stage 1")
+bars2 = ax.bar("plant", plant_based_stage2, bottom = plant_based_stage1,  label="Plant Stage 2")
+
+bars3 = ax.bar("animal", animal_based_stage1 , label = "Animal Stage 1")
+bars4 = ax.bar("animal", animal_based_stage2, bottom = animal_based_stage1, label="Animal Stage 2")
+ax.legend()
+
 #working on water usage - freshwater usage per kilogram comparison
 fig, axs = plt.subplots(1, 2, figsize=(14, 6))  
 
@@ -29,4 +54,5 @@ axs[1].set_ylabel("Liters per Kilogram")
 
 plt.tight_layout()
 plt.show()
+
 
