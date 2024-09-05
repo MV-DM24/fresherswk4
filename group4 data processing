@@ -14,9 +14,10 @@ animal_based = dataset.loc[33:42]
 #plotting total emissions
 import matplotlib.pyplot as plt
 fig = plt.subplot()
-pl_points = plt.bar( plant_based["Food product"],plant_based.Total_emissions,  color = "green")
-an_points = plt.bar( animal_based["Food product"], animal_based.Total_emissions, color = "red")
+pl_points = plt.bar( plant_based["Food product"], plant_based.Total_emissions,  color = "green", label = "plant-based food")
+an_points = plt.bar( animal_based["Food product"], animal_based.Total_emissions, color = "red", label = "animal-based food")
 plt.xticks(rotation=90, fontsize = 5)
+plt.legend()
 
 #comparing processing emissions
 plant_based_stage1= plant_based[["Land use change", "Animal Feed", "Farm"]].sum(axis=1).mean()
