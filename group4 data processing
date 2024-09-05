@@ -62,16 +62,17 @@ plt.xticks(rotation=45, fontsize = 7)
 ax.set_title("Product by product comparison in livestock farming")
 
 #working on water usage - freshwater usage per kilogram comparison and scarcity-weighted water usage
-fig, axs = plt.subplots(1, 2, figsize=(14, 6))  
+fig, axs = plt.subplots(1, 2, figsize=(14, 6))
+plant_based = plant_based.dropna()  
 
 axs[0].plot(plant_based["Food product"], plant_based["Freshwater withdrawals per kilogram (liters per kilogram)"], color="green")
 axs[0].set_title("Plant-based Freshwater Withdrawals")
-axs[0].set_xticklabels(plant_based["Food product"], rotation=90, fontsize=6)  # Rotate x-tick labels
+axs[0].set_xticklabels(plant_based["Food product"], rotation=90, fontsize=6)  
 axs[0].set_ylabel("Liters per Kilogram")
 
 axs[1].plot(animal_based["Food product"], animal_based["Freshwater withdrawals per kilogram (liters per kilogram)"], color="red")
 axs[1].set_title("Animal-based Freshwater Withdrawals")
-axs[1].set_xticklabels(animal_based["Food product"], rotation=90, fontsize=6)  # Rotate x-tick labels
+axs[1].set_xticklabels(animal_based["Food product"], rotation=90, fontsize=6)  
 axs[1].set_ylabel("Liters per Kilogram")
 
 plt.tight_layout()
