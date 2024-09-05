@@ -1,7 +1,11 @@
 import pandas as pd
+import pandas profiling
 dati_carlotta = "https://ercoppa.github.io/lfw2024/02/Food_Production.csv"
 dataset = pd.read_csv(dati_carlotta)
 dataset
+
+#creating an overview of the dataset
+dataset.profile_report
 
 #splitting up the dataset in plant-based vs animal-based foods
 plant_based = dataset.loc[0:32]
@@ -15,31 +19,48 @@ an_points = plt.bar( animal_based["Food product"], animal_based.Total_emissions,
 plt.xticks(rotation=90, fontsize = 5)
 
 #comparing processing emissions
-plant_based_stage1= plant_based[["Land use change", "Animal Feed", "Farm"]].sum(axis=1)
-plant_based_stage1 = (plant_based_stage1).sum()
+plant_based_stage1= plant_based[["Land use change", "Animal Feed", "Farm"]].sum(axis=1).mean()
 print(plant_based_stage1)
 
-animal_based_stage1 =  animal_based[["Land use change", "Animal Feed", "Farm"]].sum(axis=1)
-animal_based_stage1 = (animal_based_stage1).sum()
+animal_based_stage1 =  animal_based[["Land use change", "Animal Feed", "Farm"]].sum(axis=1).mean()
 print(animal_based_stage1)
 
-plant_based_stage2 = plant_based.iloc[:, 4:8].sum(axis=1)
-plant_based_stage2 = (plant_based_stage2).sum()
+plant_based_stage2 = plant_based.iloc[:, 4:8].sum(axis=1).mean()
 print(plant_based_stage2)
 
-animal_based_stage2 = animal_based.iloc[:, 4:8].sum(axis=1)
-animal_based_stage2 = (animal_based_stage2).sum()
+animal_based_stage2 = animal_based.iloc[:, 4:8].sum(axis=1).mean()
 print(animal_based_stage2)
 
 fig, ax = plt.subplots()
-bars1 = ax.bar("plant", plant_based_stage1, label = "Plant Stage 1")
-bars2 = ax.bar("plant", plant_based_stage2, bottom = plant_based_stage1,  label="Plant Stage 2")
+bars1 = ax.bar("plant", plant_based_stage1, label = "Agricolture (plant based)")
+bars2 = ax.bar("plant", plant_based_stage2, bottom = plant_based_stage1,  label="Distribution (Plant based)")
 
-bars3 = ax.bar("animal", animal_based_stage1 , label = "Animal Stage 1")
-bars4 = ax.bar("animal", animal_based_stage2, bottom = animal_based_stage1, label="Animal Stage 2")
+bars3 = ax.bar("animal", animal_based_stage1 , label = "Agricolture (animal based)")
+bars4 = ax.bar("animal", animal_based_stage2, bottom = animal_based_stage1, label="Distribution (Animal based)")
 ax.legend()
+ax.set_title("Emissions: Plant based food Vs Animal based food")
 
-#working on water usage - freshwater usage per kilogram comparison
+landusechange_total = animal_based["Land use change"].sum()
+animal_feed_total = animal_based["Animal Feed"].sum()
+farm_total = animal_based["Farm"].sum()
+
+#pie charts 
+labels= ["Land use change", "Animal Feed", "Farm"]
+sizes = [landusechange_total, animal_feed_total, farm_total]
+
+fig, ax=plt.subplots()
+ax.pie(sizes, labels = labels, autopct='%1.1f%%', colors= ["gray", "olivedrab", "rosybrown"])
+
+ax.set_title("The impact of Agricolture emissions on Animal_based Food")
+
+#animal stage 1 Farm histogram
+
+fig, ax = plt.subplots()
+barplot = plt.bar(animal_based["Food product"], animal_based.Farm)
+plt.xticks(rotation=45, fontsize = 7)
+ax.set_title("Product by product comparison in livestock farming")
+
+#working on water usage - freshwater usage per kilogram comparison and scarcity-weighted water usage
 fig, axs = plt.subplots(1, 2, figsize=(14, 6))  
 
 axs[0].plot(plant_based["Food product"], plant_based["Freshwater withdrawals per kilogram (liters per kilogram)"], color="green")
@@ -54,5 +75,27 @@ axs[1].set_ylabel("Liters per Kilogram")
 
 plt.tight_layout()
 plt.show()
+
+#scarcity-weighted water use
+fig, axs = plt.subplots(1, 2, figsize=(14, 6))  
+
+axs[0].plot(plant_based["Food product"], plant_based["Scarcity-weighted water use per kilogram (liters per kilogram)"], color="green")
+axs[0].set_title("Plant-based Scarcity-weighted water use")
+axs[0].set_xticklabels(plant_based["Food product"], rotation=90, fontsize=6)  
+axs[0].set_ylabel("Liters per Kilogram")
+
+axs[1].plot(animal_based["Food product"], animal_based["Scarcity-weighted water use per kilogram (liters per kilogram)"], color="red")
+axs[1].set_title("Animal-based Scarcity-weighted water use")
+axs[1].set_xticklabels(animal_based["Food product"], rotation=90, fontsize=6)  
+axs[1].set_ylabel("Liters per Kilogram")
+
+plt.tight_layout()
+plt.show()
+
+#focus on plant-based foods water use
+clean_plant = plant_based.dropna()
+fig, ax = plt.subplots(1)
+plants = ax.bar(plant_based["Food product"], clean_plant["Scarcity-weighted water use per kilogram (liters per kilogram)"])
+plt.xticks(rotation = 90)
 
 
