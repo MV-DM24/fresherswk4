@@ -20,6 +20,11 @@ plt.xticks(rotation=90, fontsize = 5)
 plt.legend()
 
 #comparing processing emissions
+color1 = [(34/255,139/255,34/255)]
+color2 = [(50/255,205/255,50/255)]
+color3 =[(139/255,0/255,0/255)]
+color4 =[(205/255,92/255,92/255)]
+#comparing processing emissions
 plant_based_stage1= plant_based[["Land use change", "Animal Feed", "Farm"]].sum(axis=1).mean()
 print(plant_based_stage1)
 
@@ -33,11 +38,11 @@ animal_based_stage2 = animal_based.iloc[:, 4:8].sum(axis=1).mean()
 print(animal_based_stage2)
 
 fig, ax = plt.subplots()
-bars1 = ax.bar("plant", plant_based_stage1, label = "Agricolture (plant based)")
-bars2 = ax.bar("plant", plant_based_stage2, bottom = plant_based_stage1,  label="Distribution (Plant based)")
+bars1 = ax.bar("plant", plant_based_stage1, label = "Agriculture", color = color1)
+bars2 = ax.bar("plant", plant_based_stage2, bottom = plant_based_stage1,  label="Distribution (Plant based)", color = color2)
 
-bars3 = ax.bar("animal", animal_based_stage1 , label = "Agricolture (animal based)")
-bars4 = ax.bar("animal", animal_based_stage2, bottom = animal_based_stage1, label="Distribution (Animal based)")
+bars3 = ax.bar("animal", animal_based_stage1 , label = "Livestock raising", color = color3)
+bars4 = ax.bar("animal", animal_based_stage2, bottom = animal_based_stage1, label="Distribution (Animal based)", color=color4)
 ax.legend()
 ax.set_title("Emissions: Plant based food Vs Animal based food")
 
@@ -48,16 +53,19 @@ farm_total = animal_based["Farm"].sum()
 #pie charts 
 labels= ["Land use change", "Animal Feed", "Farm"]
 sizes = [landusechange_total, animal_feed_total, farm_total]
+color5 = [(255/255,215/255,0/255),
+(218/255,165/255,32/255),
+(184/255,134/255,11/255)]
 
 fig, ax=plt.subplots()
-ax.pie(sizes, labels = labels, autopct='%1.1f%%', colors= ["gray", "olivedrab", "rosybrown"])
+ax.pie(sizes, labels = labels, autopct='%1.1f%%', colors = color5)
 
 ax.set_title("The impact of Agricolture emissions on Animal_based Food")
 
-#animal stage 1 Farm histogram
+#Farm - animal
 
 fig, ax = plt.subplots()
-barplot = plt.bar(animal_based["Food product"], animal_based.Farm)
+barplot = plt.bar(animal_based["Food product"], animal_based.Farm, color = (139/255,0/255,0/255))
 plt.xticks(rotation=45, fontsize = 7)
 ax.set_title("Product by product comparison in livestock farming")
 
